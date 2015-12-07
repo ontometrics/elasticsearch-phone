@@ -6,8 +6,10 @@ import static org.hamcrest.CoreMatchers.is;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,9 +17,13 @@ import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse.AnalyzeToken;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.plugins.PluginInfo;
+import org.elasticsearch.plugins.analysis.phone.PhonePlugin;
 import org.elasticsearch.test.ESIntegTestCase;
 import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
 import org.elasticsearch.test.ESIntegTestCase.Scope;
@@ -59,14 +65,29 @@ public class PhoneIntegrationTest extends ESIntegTestCase {
 	protected Settings nodeSettings(int nodeOrdinal) {
 		return Settings.settingsBuilder()
 				.put(super.nodeSettings(nodeOrdinal))
-//				.put("plugins." + PluginsService.LOAD_PLUGIN_FROM_CLASSPATH, true).;
+				.put(IndexMetaData.SETTING_VERSION_CREATED, "2010099") // not sure why this is needed, see org.elasticsearch.Version#V_2_1_0_ID
+				.put(IndexMetaData.SETTING_INDEX_UUID, UUID.randomUUID().toString())
 				.build();
 	}
 
-	@Test
+	@SuppressWarnings("unchecked")
+    @Override
+    protected Collection<Class<? extends Plugin>> nodePlugins() {
+	    return pluginList(PhonePlugin.class);
+    }
+
+    @Test
 	public void testPluginIsLoaded() {
+        
 		NodesInfoResponse infos = client().admin().cluster().prepareNodesInfo().setPlugins(true).execute().actionGet();
-		assertThat(infos.getNodes()[0].getPlugins().getInfos().get(0).getName(), is("phone-plugin"));
+		boolean pluginLoaded = false;
+		List<PluginInfo> pluginInfos = infos.getNodes()[0].getPlugins().getInfos();
+		for (PluginInfo pluginInfo : pluginInfos) {
+		    if (PhonePlugin.NAME.equals(pluginInfo.getName())) {
+		        pluginLoaded = true;
+		    }
+		}
+		assertTrue("Could not find expected plugin: " + PhonePlugin.NAME, pluginLoaded);
 	}
 
 	@Test

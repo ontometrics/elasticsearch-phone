@@ -5,6 +5,8 @@ import org.elasticsearch.plugins.Plugin;
 
 public class PhonePlugin extends Plugin {
 
+    public static final String NAME = "phone-plugin";
+    
     /* Return a description of this plugin. */
     public String description() {
         return "Makes a best attempt at tokenizing a phone number or sip address";
@@ -17,7 +19,9 @@ public class PhonePlugin extends Plugin {
         analysisModule.addProcessor(new PhoneBinderProcessor());
     }
 
+    @Override
     public String name() {
-        return "phone-plugin";
+        return NAME;
     }
+
 }

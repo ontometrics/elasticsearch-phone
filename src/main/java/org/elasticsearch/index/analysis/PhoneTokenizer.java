@@ -1,6 +1,10 @@
 package org.elasticsearch.index.analysis;
 
 
+import  java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -10,11 +14,6 @@ import  org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
-
-import  java.io.IOException;
-import  java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PhoneTokenizer extends Tokenizer {
 
