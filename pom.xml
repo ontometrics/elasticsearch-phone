@@ -6,14 +6,16 @@
 	<groupId>com.inin.analytics</groupId>
 	<artifactId>elasticsearch-phone</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>elasticsearch-phone</name>
 	<description>Elasticsearch Plugin for Phone and SIP Analysis</description>
 	<url>https://github.com/MyPureCloud/elasticsearch-phone</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java-version>1.7</java-version>
-		<junit.version>4.11</junit.version>
+		<elasticsearch.version>2.1.0</elasticsearch.version>
+		<lucence.version>5.3.1</lucence.version>
+		<junit.version>4.12</junit.version>
 		<java.io.tmpdir>/tmp</java.io.tmpdir>
 	</properties>
 
@@ -52,20 +54,20 @@
 		<dependency>
 			<groupId>com.googlecode.libphonenumber</groupId>
 			<artifactId>libphonenumber</artifactId>
-			<version>7.0.7</version>
+			<version>7.2.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-test-framework</artifactId>
-			<version>4.10.4</version>
+			<version>${lucence.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>1.6.0</version>
+			<version>${elasticsearch.version}</version>
 		</dependency>
 
 		<dependency>
@@ -77,7 +79,7 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>1.6.0</version>
+			<version>${elasticsearch.version}</version>
 			<scope>test</scope>
 			<type>test-jar</type>
 		</dependency>

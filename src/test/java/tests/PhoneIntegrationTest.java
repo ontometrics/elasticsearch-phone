@@ -10,23 +10,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.cluster.node.info.NodesInfoResponse;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse.AnalyzeToken;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.common.lang3.StringUtils;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.plugins.PluginsService;
-import org.elasticsearch.test.ElasticsearchIntegrationTest;
+import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.test.ESIntegTestCase.Scope;
 import org.junit.Before;
 import org.junit.Test;
 
 
-@ElasticsearchIntegrationTest.ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE)
-public class PhoneIntegrationTest extends ElasticsearchIntegrationTest {
+@ClusterScope(scope = Scope.SUITE)
+public class PhoneIntegrationTest extends ESIntegTestCase {
 
 	static {
 		ClassLoader.getSystemClassLoader().setDefaultAssertionStatus(true);
@@ -57,10 +57,10 @@ public class PhoneIntegrationTest extends ElasticsearchIntegrationTest {
 
 	@Override
 	protected Settings nodeSettings(int nodeOrdinal) {
-		org.elasticsearch.common.settings.ImmutableSettings.Builder builder = ImmutableSettings.builder()
+		return Settings.settingsBuilder()
 				.put(super.nodeSettings(nodeOrdinal))
-				.put("plugins." + PluginsService.LOAD_PLUGIN_FROM_CLASSPATH, true);
-		return builder.build();
+//				.put("plugins." + PluginsService.LOAD_PLUGIN_FROM_CLASSPATH, true).;
+				.build();
 	}
 
 	@Test

@@ -2,10 +2,10 @@ package org.elasticsearch.index.analysis;
 
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import  org.apache.lucene.analysis.Tokenizer;
 import  org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.elasticsearch.common.lang3.StringUtils;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -34,8 +34,7 @@ public class PhoneTokenizer extends Tokenizer {
 	// The base class grabs the charTermAttribute each time incrementToken returns
 	protected CharTermAttribute charTermAttribute = addAttribute(CharTermAttribute.class);
 
-	public PhoneTokenizer(Reader reader) {
-		super(reader);
+	public PhoneTokenizer() {
 	}
 
 	@Override
