@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -63,7 +64,7 @@ public class PhoneIntegrationTest extends ESIntegTestCase {
 
 	@Override
 	protected Settings nodeSettings(int nodeOrdinal) {
-		return Settings.settingsBuilder()
+		return Settings.builder()
 				.put(super.nodeSettings(nodeOrdinal))
 				.put(IndexMetaData.SETTING_VERSION_CREATED, "2010099") // not sure why this is needed, see org.elasticsearch.Version#V_2_1_0_ID
 				.put(IndexMetaData.SETTING_INDEX_UUID, UUID.randomUUID().toString())
@@ -73,15 +74,15 @@ public class PhoneIntegrationTest extends ESIntegTestCase {
 	@SuppressWarnings("unchecked")
     @Override
     protected Collection<Class<? extends Plugin>> nodePlugins() {
-	    return pluginList(PhonePlugin.class);
+	    return Collections.singleton(PhonePlugin.class);
     }
 
     @Test
 	public void testPluginIsLoaded() {
         
-		NodesInfoResponse infos = client().admin().cluster().prepareNodesInfo().setPlugins(true).execute().actionGet();
+		NodesInfoResponse infos = client().admin().cluster().prepareNodesInfo().setPlugins(true).get();
 		boolean pluginLoaded = false;
-		List<PluginInfo> pluginInfos = infos.getNodes()[0].getPlugins().getInfos();
+		List<PluginInfo> pluginInfos = infos.getNodes().get(0).getPlugins().getPluginInfos();
 		for (PluginInfo pluginInfo : pluginInfos) {
 		    if (PhonePlugin.NAME.equals(pluginInfo.getName())) {
 		        pluginLoaded = true;
