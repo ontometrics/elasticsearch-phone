@@ -27,8 +27,9 @@
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <includes>
                 <include>com.googlecode.libphonenumber:libphonenumber</include>
-        <include>org.apache.commons:commons-lang3</include>
+                <include>org.apache.commons:commons-lang3</include>
             </includes>
         </dependencySet>
     </dependencySets>
 </assembly>
+
