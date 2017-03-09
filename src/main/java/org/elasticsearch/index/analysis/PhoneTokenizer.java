@@ -100,6 +100,15 @@ public class PhoneTokenizer extends Tokenizer {
         try {
             // ZZ is the generic "I don't know the country code" region. Google's libphone library will try to
             // infer it.
+            //>>>>>>>>>>>>>>test
+            int indexOfPhoneContext = number.indexOf(";phone-context=");
+            if (indexOfPhoneContext > 0) {
+              int phoneContextStart = indexOfPhoneContext + ";phone-context=".length();
+              if (number.length() <= phoneContextStart) {
+                  System.out.println(">>>test number = "+number+", phoneContextStart= "+phoneContextStart+", number len= "+number.length());
+              }
+            }
+            //<<<<<<<<<<<<<<
             numberProto = phoneUtil.parse(number, "ZZ");
             if (numberProto != null) {
                 // Libphone likes it!
