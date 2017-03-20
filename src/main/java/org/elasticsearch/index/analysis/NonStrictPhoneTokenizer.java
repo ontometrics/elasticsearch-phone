@@ -5,7 +5,6 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
@@ -77,7 +76,6 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
         String uri = getStringToTokenize();
 
         tokens = new ArrayList<String>();
-        tokens.add(getStringToTokenize());
 
 
         // Drop anything after @. Most likely there's nothing of interest
@@ -135,21 +133,33 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
             }
         } else {
             number = cleanNumber(number);
-            if (generateNGrams) {
-                for (int count = 1; count <= number.length(); count++) {
-                    String token = number.substring(0, count);
-                    tokens.add(token);
+            if (StringUtils.isNotBlank(number)) {
+                if (generateNGrams) {
+                    for (int count = 1; count <= number.length(); count++) {
+                        String token = number.substring(0, count);
+                        tokens.add(token);
+                    }
+                } else {
+                    tokens.add(number);
                 }
-            } else {
-                tokens.add(number);
             }
-            tokens.add(number);
         }
     }
 
-    private String cleanNumber(String number) {
-        //todo: implement
-        return number;
+    /**
+     *
+     * @param text text to clean from non-decimal symbols
+     * @return string with non-decimal characters removed
+     */
+    private static String cleanNumber(String text) {
+        if (StringUtils.isBlank(text)) {
+            return text;
+        }
+        StringBuilder result = new StringBuilder(text.length());
+
+        text.chars().mapToObj( i-> (char)i ).filter(Character::isDigit).forEach(c -> result.append(c) );
+
+        return result.toString();
     }
 
     /**
