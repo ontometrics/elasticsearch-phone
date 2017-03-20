@@ -9,7 +9,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-
+/**
+ * {@link PhoneNumberUtil#parse(String, String)} test which verifies that the util parses typical valid phones
+ * from exelare db and doesn't parse typical invalid phones
+ */
 public class PhoneUtilsTest {
 
     PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();

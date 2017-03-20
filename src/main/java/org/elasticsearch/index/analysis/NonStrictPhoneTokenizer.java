@@ -22,6 +22,7 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
     private String defaultRegion = "US";
     private boolean addCountryCode = false;
     private boolean addExtension = false;
+    private boolean generateNGrams = false;
 
     // The raw input
     private String stringToTokenize = null;
@@ -87,17 +88,16 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
 
         String number = parts[0];
 
-        // Add a token for the raw unmanipulated address. Note this could be a username (sip) instead of
-        // telephone number so take it as is
-        tokens.add(number);
 
         // Let google's libphone try to parse it
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
         PhoneNumber numberProto;
         String countryCode = null;
+        boolean validPhone = false;
         try {
             numberProto = phoneUtil.parse(number, defaultRegion);
-            if (numberProto != null) {
+            validPhone = phoneUtil.isValidNumber(numberProto);
+            if (numberProto != null && validPhone) {
                 // Libphone likes it!
                 countryCode = String.valueOf(numberProto.getCountryCode());
                 number = String.valueOf(numberProto.getNationalNumber());
@@ -107,8 +107,6 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
                 if (addExtension && !StringUtils.isEmpty(numberProto.getExtension())) {
                     tokens.add(numberProto.getExtension());
                 }
-
-                tokens.add(number);
             }
         } catch (NumberParseException e) {
             // Libphone didn't like it, no biggie. We'll just ngram the number as it is.
@@ -117,17 +115,41 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
         }
 
         // ngram the phone number EG 19198243333 produces 9, 91, 919, etc
-        if (NumberUtils.isNumber(number)) {
-            for (int count = 1; count <= number.length(); count++) {
-                String token = number.substring(0, count);
-                tokens.add(token);
-                if (countryCode != null) {
-                    // If there was a country code, add more ngrams such that 19198243333 produces 19, 191,
-                    // 1919, etc
-                    tokens.add(countryCode + token);
+        if (validPhone) {
+            boolean hasCountryCode = StringUtils.isNotBlank(countryCode);
+            if (generateNGrams) {
+                for (int count = 1; count <= number.length(); count++) {
+                    String token = number.substring(0, count);
+                    tokens.add(token);
+                    if (hasCountryCode) {
+                        // If there was a country code, add more ngrams such that 19198243333 produces 19, 191,
+                        // 1919, etc
+                        tokens.add(countryCode + token);
+                    }
+                }
+            } else {
+                tokens.add(number);
+                if (hasCountryCode) {
+                    tokens.add(countryCode + number);
                 }
             }
+        } else {
+            number = cleanNumber(number);
+            if (generateNGrams) {
+                for (int count = 1; count <= number.length(); count++) {
+                    String token = number.substring(0, count);
+                    tokens.add(token);
+                }
+            } else {
+                tokens.add(number);
+            }
+            tokens.add(number);
         }
+    }
+
+    private String cleanNumber(String number) {
+        //todo: implement
+        return number;
     }
 
     /**
