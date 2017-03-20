@@ -6,15 +6,15 @@
     <groupId>com.inin.analytics</groupId>
     <artifactId>elasticsearch-phone</artifactId>
     <packaging>jar</packaging>
-    <version>5.1.1</version>
+    <version>5.2.2</version>
     <name>elasticsearch-phone</name>
     <description>Elasticsearch Plugin for Phone and SIP Analysis</description>
     <url>https://github.com/MyPureCloud/elasticsearch-phone</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.sourceVersion>1.7</project.build.sourceVersion>
-        <elasticsearch.version>5.1.1</elasticsearch.version>
-        <lucence.version>6.3.0</lucence.version>
+        <elasticsearch.version>5.2.2</elasticsearch.version>
+        <lucence.version>6.4.1</lucence.version>
         <junit.version>4.12</junit.version>
                 <elasticsearch.assembly.descriptor>${basedir}/src/main/assemblies/plugin.xml</elasticsearch.assembly.descriptor>
     </properties>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
-            <version>7.0.7</version>
+            <version>8.3.3</version>
         </dependency>
 
         <dependency>
