@@ -42,6 +42,12 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
     public NonStrictPhoneTokenizer() {
     }
 
+    public NonStrictPhoneTokenizer(boolean addCountryCode, boolean addExtension, boolean generateNGrams) {
+        this.addCountryCode = addCountryCode;
+        this.addExtension = addExtension;
+        this.generateNGrams = generateNGrams;
+    }
+
     @Override
     public final boolean incrementToken() throws IOException {
         // Clear anything that is already saved in this.charTermAttribute

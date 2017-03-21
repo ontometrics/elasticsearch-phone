@@ -2,6 +2,7 @@ package org.elasticsearch.plugins.analysis.phone;
 
 import static java.util.Collections.singletonMap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -32,6 +33,9 @@ public class PhonePlugin extends Plugin implements AnalysisPlugin {
 
     @Override
     public Map<String, AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> getAnalyzers() {
-        return singletonMap("phone", PhoneAnalyzerProvider::new);
+        Map<String, AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> map = new HashMap<>();
+        map.put("phone", PhoneAnalyzerProvider::new);
+        map.put("non-strict-phone", NonStrictPhoneAnalyzerProvider::new);
+        return map;
     }
 }
