@@ -6,7 +6,7 @@
     <groupId>com.inin.analytics</groupId>
     <artifactId>elasticsearch-phone</artifactId>
     <packaging>jar</packaging>
-    <version>5.2.2</version>
+    <version>5.2.2_1</version>
     <name>elasticsearch-phone</name>
     <description>Elasticsearch Plugin for Phone and SIP Analysis</description>
     <url>https://github.com/MyPureCloud/elasticsearch-phone</url>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
             <artifactId>libphonenumber</artifactId>
-            <version>8.3.3</version>
+            <version>8.5.0</version>
         </dependency>
 
         <dependency>

@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,13 +82,17 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
     private void generateTokens() {
         String uri = getStringToTokenize();
 
-        tokens = new ArrayList<String>();
+        tokens = generatePhoneTokens(uri);
+    }
+
+    public List<String> generatePhoneTokens(String input) {
+        List<String> tokens = new ArrayList<>();
 
 
         // Drop anything after @. Most likely there's nothing of interest
-        String[] parts = StringUtils.split(uri, "@");
+        String[] parts = StringUtils.split(input, "@");
         if (parts.length == 0) {
-            return;
+            return Collections.emptyList();
         }
 
         String number = parts[0];
@@ -112,8 +117,6 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
                     tokens.add(numberProto.getExtension());
                 }
             }
-        } catch (NumberParseException e) {
-            // Libphone didn't like it, no biggie. We'll just ngram the number as it is.
         } catch (Exception e) {
             // Ignored if Libphone cannot parse it.
         }
@@ -150,6 +153,7 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
                 }
             }
         }
+        return tokens;
     }
 
     /**
@@ -163,7 +167,7 @@ public class NonStrictPhoneTokenizer extends Tokenizer {
         }
         StringBuilder result = new StringBuilder(text.length());
 
-        text.chars().mapToObj( i-> (char)i ).filter(Character::isDigit).forEach(c -> result.append(c) );
+        text.chars().mapToObj( i-> (char)i ).filter(Character::isDigit).forEach(result::append);
 
         return result.toString();
     }
