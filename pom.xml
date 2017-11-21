@@ -6,17 +6,17 @@
     <groupId>com.inin.analytics</groupId>
     <artifactId>elasticsearch-phone</artifactId>
     <packaging>jar</packaging>
-    <version>5.4.1_1</version>
+    <version>5.6.4</version>
     <name>elasticsearch-phone</name>
     <description>Elasticsearch Plugin for Phone and SIP Analysis</description>
     <url>https://github.com/MyPureCloud/elasticsearch-phone</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.sourceVersion>1.7</project.build.sourceVersion>
-        <elasticsearch.version>5.4.1</elasticsearch.version>
+        <elasticsearch.version>5.6.4</elasticsearch.version>
         <lucence.version>6.4.1</lucence.version>
         <junit.version>4.12</junit.version>
-                <elasticsearch.assembly.descriptor>${basedir}/src/main/assemblies/plugin.xml</elasticsearch.assembly.descriptor>
+        <elasticsearch.assembly.descriptor>${basedir}/src/main/assemblies/plugin.xml</elasticsearch.assembly.descriptor>
     </properties>
 
     <licenses>
@@ -121,13 +121,20 @@
             <artifactId>jna</artifactId>
             <version>4.2.1</version>
             <scope>test</scope>
-        </dependency>   
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-            <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.7</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <developers>
